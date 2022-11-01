@@ -2,7 +2,7 @@ import express from 'express';
 import { Router } from 'express';
 import config from '../../configdb.js';
 import CRUDMysqlSQLIte from '../containers/contenedorMysqlSqlite.js';
-const DB = new CRUDMysql & SQLIte(config.MySQL, 'products');
+const DB = new CRUDMysqlSQLIte(config.MySQL, 'products');
 const router = Router();
 const app = express();
 app.use(express.json());
@@ -10,7 +10,7 @@ app.use(express.json());
 
 router.get("/", async (req, res) => {
   try {
-    const data = await DB.getAll()
+    const data = await DB.read()
     res.send(data);
   } catch (err) {
     res.status(404).send(err);
@@ -20,7 +20,7 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await DB.getById(id);
+    const data = await DB.readById(id);
     res.send(data);
   } catch (err) {
     res.status(404).send(err);
@@ -31,7 +31,7 @@ router.get("/:id", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     const data = req.body;
-    await DB.add(data);
+    await DB.create(data);
     res.send(data);
   } catch (err) {
     res.status(404).send(err);

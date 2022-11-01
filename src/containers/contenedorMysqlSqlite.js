@@ -1,5 +1,5 @@
 import knex from "knex";
-import config from "../../configdb.js";
+
 
 class CRUDMysqlSQLIte {
     constructor(config, tabla) {

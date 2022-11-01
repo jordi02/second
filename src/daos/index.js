@@ -1,9 +1,3 @@
-// import daoMongo from "./daoMongo.js";
-
-// const mongo = new daoMongo();
-// const read = await mongo.read();
-// console.log(read)
-
 import * as dotenv from "dotenv";
 dotenv.config();
 console.log(process.env.TIPO_DB)
