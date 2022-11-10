@@ -3,15 +3,15 @@ import config from "../../configdb.js";
 
 admin.initializeApp({
     credential: admin.credential.cert(config.FireBase),
-    databaseURL: "https://my-project-1520486770181.firebaseio.com"
+    databaseURL: "https://coderback-21c69.firebaseio.com"
 });
 
 const db = admin.firestore();
 
 class CRUDFireBase {
-    constructor() {
+    constructor(collection) {
         this.db = db;
-        this.collection = db.collection("carrito");
+        this.collection = db.collection(collection);
     }
 
     async create(data) {

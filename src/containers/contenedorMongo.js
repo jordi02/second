@@ -37,7 +37,6 @@ class CRUDMongo {
 
     async update(id, data) {
         try {
-
             const result = await this.db.updateOne({ _id: id }, { $set: data });
             return result;
         } catch (error) {

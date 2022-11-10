@@ -1,8 +1,8 @@
 import express from 'express';
 import { Router } from 'express';
-import config from '../../configdb.js';
-import CRUDMysqlSQLIte from '../containers/contenedorMysqlSqlite.js';
-const DB = new CRUDMysqlSQLIte(config.MySQL, 'products');
+import daos from '../daos/index.js';
+import isAuthorized from '../../middlewares/auth.js'
+const { productos } = await daos;
 const router = Router();
 const app = express();
 app.use(express.json());
@@ -10,7 +10,7 @@ app.use(express.json());
 
 router.get("/", async (req, res) => {
   try {
-    const data = await DB.read()
+    const data = await productos.read()
     res.send(data);
   } catch (err) {
     res.status(404).send(err);
@@ -20,7 +20,7 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await DB.readById(id);
+    const data = await productos.readById(id);
     res.send(data);
   } catch (err) {
     res.status(404).send(err);
@@ -28,32 +28,32 @@ router.get("/:id", async (req, res) => {
 });
 
 
-router.post("/", async (req, res) => {
+router.post("/", isAuthorized, async (req, res) => {
   try {
     const data = req.body;
-    await DB.create(data);
+    await productos.create(data);
     res.send(data);
   } catch (err) {
     res.status(404).send(err);
   }
 });
 
-router.put("/:id", (req, res) => {
+router.put("/:id", isAuthorized, (req, res) => {
   try {
     const { id } = req.params;
     const prodNuevo = req.body;
     const idInt = parseInt(id);
-    DB.update(idInt, prodNuevo);
+    productos.update(idInt, prodNuevo);
     res.send(`Producto con id ${id} actualizado`);
   } catch (err) {
     res.status(404).send(err.msg);
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", isAuthorized, async (req, res) => {
   try {
     const { id } = req.params;
-    await DB.delete(id);
+    await productos.delete(id);
     res.send(`El producto con id ${id} fue eliminado`);
   } catch (err) {
     res.status(404).send(err.msg);
