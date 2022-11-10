@@ -3,7 +3,7 @@ import config from "../../configdb.js";
 
 admin.initializeApp({
     credential: admin.credential.cert(config.FireBase),
-    databaseURL: "https://coderback-21c69.firebaseio.com"
+    databaseURL: "https://my-project-1520486770181.firebaseio.com"
 });
 
 const db = admin.firestore();
