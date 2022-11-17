@@ -1,8 +1,7 @@
 function render(data) {
   const html = data.map(elem => `<div>
-    <span style="font-weight: bold;">${elem.email}</span>
-    <span style="font-size: 10px;">${elem.date}</span>
-    <p>${elem.msg}</p>
+    <span style="font-weight: bold;">${elem.author.id}</span>
+    <p>${elem.msg.msg}</p>
     </div>`).join(' ');
   document.getElementById('mensajes-chat').innerHTML = html;
 
@@ -20,8 +19,40 @@ function renderProductos(data) {
   document.getElementById('lista-productos').innerHTML = html;
 }
 
+
 const socket = io.connect()
-socket.on('new-message', (data) => { render(data) })
+socket.on('new-message', (data) => {
+  const authorSchema = new normalizr.schema.Entity('author');
+  const msgSchema = new normalizr.schema.Entity('msg');
+  const schemaCompleto = new normalizr.schema.Entity('Chat',
+    {
+      author: authorSchema,
+      msg: msgSchema,
+    }
+  );
+  const DataDenormalizada = normalizr.denormalize(data.normalizedData.result, [schemaCompleto], data.normalizedData.entities)
+  const html = data.PorcentajeData
+  document.getElementById('data-normalizada').innerHTML = html;
+  render(DataDenormalizada)
+  //console.log(DataDenormalizada)
+})
+
+//front
+// socket.on('data-normalizada', (data) => {
+//   const authorSchema = new normalizr.schema.Entity('author');
+//   const msgSchema = new normalizr.schema.Entity('msg');
+//   const schemaCompleto = new normalizr.schema.Entity('Chat',
+//     {
+//       author: authorSchema,
+//       msg: msgSchema,
+//     }
+//   );
+
+//   const dataStringifiada = JSON.stringify(normalizr.denormalize(data.normalizedData.result, [schemaCompleto], data.normalizedData.entities));
+//   console.log(dataStringifiada);
+//   const html = data.PorcentajeData
+//   document.getElementById('data-normalizada').innerHTML = html;
+// })
 socket.on('new-product', (data) => { renderProductos(data) })
 
 
