@@ -5,6 +5,9 @@ import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
+
+
+
 const app = express();
 
 // DB
@@ -14,11 +17,12 @@ import sqliteConfig from './dbConnection/SQLite3.js';
 sqliteConfig.connection.filename = "./DB/ecommerce.sqlite"
 const DBMensajes = new DBContainer(sqliteConfig, 'messages');
 const DBProductos = new DBContainer(mysqlconnection, 'products');
-import daoMongo from './src/daos/usuarios/daoMongo.js';
-const daoUsuarios = new daoMongo();
 
-// productos router
+
+
+// routers
 import { productosRouter } from './src/routes/productos.js';
+import { usersRouter } from './src/routes/usuarios.js';
 
 // Normalizador de mensajes
 import Normalizr from './normalizr.js';
@@ -30,12 +34,12 @@ const httpServer = createServer(app);
 const io = new Server(httpServer);
 
 //middlewares
-import isLoggedIn from './middlewares/log.js';
+
 
 //Configuraciones
 app.use(cookieParser('kfjcu3977qhh214mm8rq723'))
-app.use(express.urlencoded({ extended: true }));
-app.use(bodyParser.urlencoded({ extend: false }));
+app.use(express.urlencoded({ extended: true }))
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("views"));
 
@@ -43,16 +47,16 @@ app.use(express.static("views"));
 app.use(session({
   secret: 'm34km24m2k4',
   resave: true,
+  saveUninitialized: true,
   cookie: { maxAge: 60000 },
   store: MongoStore.create({
-    mongoUrl: 'mongodb+srv://root:ClauMon123@cluster0.un0rzna.mongodb.net/?retryWrites=true&w=majority',
+    mongoUrl: 'mongodb://localhost:27017/ecommerce',
     mongoOptions: {
       useNewUrlParser: true,
       useUnifiedTopology: true
     }
   })
 }))
-
 
 /////////////////////////
 // SOCKET IO ////////////
@@ -89,7 +93,6 @@ app.engine(
     defaultLayout: "main",
   })
 );
-
 app.set("views", "./views");
 app.set("view engine", "hbs");
 
@@ -112,67 +115,13 @@ app.get("/", async (req, res) => {
   }
 });
 
-app.get('/login', isLoggedIn, (req, res) => {
-  res.render('login', {
-    layout: 'login',
-    title: 'Login',
-  })
-})
-
-app.post('/login', async (req, res) => {
-  const { user, password } = req.body;
-  const verificacion = await daoUsuarios.findUser(user, password)
-  if (verificacion) {
-    req.session.user = user;
-    res.redirect('/')
-  } else { res.send("Usuario o contraseña incorrect <a href=/login>Volver al login</a>") }
-})
-
-
-
-app.get('/register', (req, res) => {
-  res.render('register', {
-    layout: 'register',
-    title: 'Register',
-  })
-})
-
-app.post('/register', (req, res) => {
-  const { user, password } = req.body;
-  daoUsuarios.create({ user, password });
-  req.session.user = user;
-  res.redirect('/');
-})
-
-app.get('/logout', (req, res) => {
-  const username = req.session.user
-  req.session.destroy();
-  res.render('logout', {
-    layout: 'logout',
-    title: 'logout',
-    name: username,
-  })
-
-
-}
-)
-
-
-
-
-// res.render('register', {
-//   layout: 'register',
-//   title: 'Register',
-// })
-// req.session.destroy();
-// setTimeout(() => res.redirect('/login'), 2000)
-
-
 /////////////////////////
 // EXPRESS ROUTER ///////
 /////////////////////////
 
 app.use("/productos", productosRouter);
+app.use("/", usersRouter);
+
 
 /////////////////////////
 // SERVER ON ////////////

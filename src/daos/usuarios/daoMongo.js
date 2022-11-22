@@ -2,7 +2,12 @@ import CRUDMongo from "../../../src/containers/contenedorMongo.js";
 
 class daoMongo extends CRUDMongo {
     constructor() {
-        super("usuarios", { user: String, password: String });
+        super("usuarios", { username: String, password: String });
+    }
+
+    async findUserByName(username) {
+        const user = await this.db.find({ username });
+        return user;
     }
 
     async findUser(username, password) {
