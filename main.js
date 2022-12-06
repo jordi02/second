@@ -1,12 +1,14 @@
 //Libs
-import express from 'express';
+import express, { application, json } from 'express';
 import handlebars from "express-handlebars";
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
-
-
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+import { fork } from "child_process";
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 const app = express();
 
@@ -18,7 +20,15 @@ sqliteConfig.connection.filename = "./DB/ecommerce.sqlite"
 const DBMensajes = new DBContainer(sqliteConfig, 'messages');
 const DBProductos = new DBContainer(mysqlconnection, 'products');
 
+//YARGS
+import Yargs from 'yargs/yargs';
+const yargs = Yargs(process.argv.slice(2));
 
+const serverPort = yargs.alias({
+  p: "port",
+}).default(
+  { port: 8080 }
+).argv
 
 // routers
 import { productosRouter } from './src/routes/productos.js';
@@ -108,12 +118,29 @@ app.get("/", async (req, res) => {
       compras: await DBProductos.getAll(),
       noProd: "No hay productos",
       partialsPath: "./views/partials",
+
     })
   }
   else {
     res.redirect('/login')
   }
 });
+
+app.use("/info", (req, res) => {
+  res.render("info", {
+    layout: "info",
+    title: "Información",
+    args: JSON.stringify(process.argv, null, "\t"),
+    so: process.platform,
+    version: process.version,
+    memory: process.memoryUsage().rss,
+    path: process.cwd(),
+    processID: process.pid,
+    proyectFolder: __dirname
+  })
+})
+
+
 
 /////////////////////////
 // EXPRESS ROUTER ///////
@@ -122,10 +149,39 @@ app.get("/", async (req, res) => {
 app.use("/productos", productosRouter);
 app.use("/", usersRouter);
 
+//Random
 
-/////////////////////////
+const CON_CHILD_PROCESS_FORK = !false;
+if (CON_CHILD_PROCESS_FORK) {
+  let calculo = fork("./computo.js");
+
+  var taskId = 0;
+  var tasks = {};
+
+  function addTask(data, callback) {
+    var id = taskId++;
+    calculo.send({ id: id, data: data });
+    tasks[id] = callback;
+  }
+
+  calculo.on("message", function (message) {
+    tasks[message.id](message);
+  });
+
+  app.get("/randoms", async (req, res) => {
+    addTask(req.query.cant || 1000, (randoms) => {
+      res.json(randoms);
+    });
+  });
+} else {
+  app.get("/randoms", async (req, res) => {
+    res.send('<h2 style="color: orangered;">randoms -> no implementado!</h2>');
+  });
+}
+
+///////////////////////
 // SERVER ON ////////////
 /////////////////////////
-httpServer.listen(3000, () => {
-  console.log("Server ON");
+httpServer.listen(serverPort.port, () => {
+  console.log("Server escuchando en el puerto " + serverPort.port);
 });

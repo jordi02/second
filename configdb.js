@@ -13,4 +13,3 @@ export default config;
 
 
 
-// const asd = "mongodb+srv://root:ClauMon123@cluster0.un0rzna.mongodb.net/?retryWrites=true&w=majority"
