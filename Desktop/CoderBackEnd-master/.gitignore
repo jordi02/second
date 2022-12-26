@@ -1,0 +1,6 @@
+node_modules/
+*.sqlite
+20-SegundaEntrega/helpers/firestore-config.js
+*Creds.js
+.env
+*.log
