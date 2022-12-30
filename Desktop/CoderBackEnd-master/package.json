@@ -1,9 +1,8 @@
 {
-  "name": "coder-backend",
+  "name": "desafio3",
   "version": "1.0.0",
-  "description": "Comenzando el proyecto para el curso de backend de coderhouse",
-  "main": "main.js",
-  "type": "module",
+  "description": "servidor con express",
+  "main": "servidor-express.js",
   "dependencies": {
     "@faker-js/faker": "^7.6.0",
     "abbrev": "^1.1.1",
@@ -121,10 +120,20 @@
     "vary": "^1.1.2",
     "winston": "^3.8.2"
   },
-  
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/jordi02/second"
-  },
-
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "handlebars": "nodemon start 10-Decima-clase/handlebars/restful.js",
+    "pug": "nodemon start 10-Decima-clase/pug/restful.js",
+    "ejs": "nodemon start 10-Decima-clase/ejs/restful.js",
+    "websocket": "nodemon start 12-DecimoSegunda-clase/main.js",
+    "primeraentrega": "nodemon start 14-PrimeraEntrega/main.js",
+    "wswithdb": "nodemon start 16-DecimoSexta-clase/main.js",
+    "segundaentrega": "nodemon start 20-SegundaEntrega/main.js",
+    "mocks": "nodemon start 22-Mocks/main.js",
+    "login": "nodemon start 24-Login/main.js",
+    "auth": "nodemon start 26-Auth/main.js",
+    "process": "node 28-Process/main.js",
+    "loadbalance": "node 30-LoadBalance/main.js",
+    "logsnperf": "node 32-LogsnPerf/main.js"
+  }
 }

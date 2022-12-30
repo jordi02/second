@@ -4,7 +4,8 @@ const logger = require('../app/logger');
 
 const SQLHelper = require('../helpers/sqlHelper.js')
 
-
+/* si no soy estupido migre todo esto a home.js 
+pero como eso es una gran asuncion mejor prevenir q lamentar */
 const mariadb = new SQLHelper({
     client: "mysql",
     connection: {

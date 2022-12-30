@@ -99,7 +99,7 @@ router.get('/info', async (req, res) => {
         'folder': process.execPath,
         'cpus': cpus
     }
-    console.log(data)
+    //console.log(data)
     res.render('info', {data: data})
 })
 

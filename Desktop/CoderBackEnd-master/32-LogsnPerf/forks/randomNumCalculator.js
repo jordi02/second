@@ -19,7 +19,10 @@ function getNums(start, end, amount) {
     return nums
 }
 
-
+// asi de feo como se ve este doble loop,
+// iterar sobre los indices de un array es 40% mas rapido
+// que ir buscando claves dentro de un diccionario.
+// en tu cara maximiliano
 
 function getQtyties(arr) {
     let results = [];

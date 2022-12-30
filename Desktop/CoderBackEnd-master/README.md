@@ -1,6 +1,12 @@
 # Coderhouse backend, comision 32105
 
 
+## 27/12/2022
+#### Logs & Performance
+````
+> npm run logsnperf
+````
+Mismo CLI que la entrega anterior
 ## 11/12/2022
 #### Proxy & Nginx
 ````
