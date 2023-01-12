@@ -76,6 +76,7 @@
     "moment": "^2.29.4",
     "mongoose": "^6.7.0",
     "ms": "^2.0.0",
+    "multer": "^1.4.5-lts.1",
     "mysql": "^2.18.1",
     "negotiator": "^0.6.3",
     "nodemon": "^2.0.19",
@@ -134,6 +135,7 @@
     "auth": "nodemon start 26-Auth/main.js",
     "process": "node 28-Process/main.js",
     "loadbalance": "node 30-LoadBalance/main.js",
-    "logsnperf": "node 32-LogsnPerf/main.js"
+    "logsnperf": "node 32-LogsnPerf/main.js",
+    "terceraentrega": "nodemon 36-TerceraEntrega/main.js"
   }
 }
