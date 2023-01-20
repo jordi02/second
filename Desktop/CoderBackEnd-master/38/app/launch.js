@@ -54,7 +54,7 @@ function launchForks(aport) {
         if (aport != 'NaN') {
             for (let i = aport; i < aport+cpus; i++) {
                 logger.info(`Forking process on port ${i}`);
-                child_process.fork('./36-LoadBalance/main.js', [i], {cwd:process.cwd()} )
+                child_process.fork('./38-Capas/main.js', [i], {cwd:process.cwd()} )
             }
         } else {
             logger.error(`No deberias haber llegado hasta aca, hay veinte chequeos que lograste romper`)

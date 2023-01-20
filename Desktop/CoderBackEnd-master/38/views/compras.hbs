@@ -1,0 +1,35 @@
+<section>
+<div>
+            <button type="button" onclick=window.location='/'>Home</button>
+            <button type="button" onclick=window.location='/accounts/logout'>Log out</button>
+            <button type="button" onclick=window.location='/accounts/profile'>Profile</button>            
+            <button type="button" onclick=window.location='/carritos/micarrito'>Cart</button>
+            <button type="button" onclick=window.location='/compras'>Buy History</button>
+    <h1> Welcome, {{ username }}</h1>
+</div>
+</section>
+
+<div>
+
+    {{#if data}}
+    <h2>Historial de compras</h2>
+    {{#each data}}
+    <h3>Compra del {{this.dateBought}}</h3>
+    <table>
+        <tr>
+            <th>Product</th>
+            <th>Price</th>
+            <th>Thumbnail</th>
+        </tr>
+        {{#each this.itemsBought}}
+        <tr>
+            <td>{{this.name}}</td>
+            <td>${{this.price}}</td>
+            <td><img src={{this.thumbnail}}></td>
+        </tr>
+        {{/each}}
+    </table>
+    {{/each}}
+    {{/if}}
+
+</div>
