@@ -1,5 +1,36 @@
 # Coderhouse backend, comision 32105
 
+## 28/01/2023
+
+#### Persistencia
+
+```
+> npm run persistencia
+```
+
+- Implementa un Object Interface / Factory para todos mis models/helpers de la db (totalmente redundante porque mis db/models/\* exportan una única instancia de cada objeto, pero bueno.)
+- Implementa DTOs para todos los objetos que deben ser insertados en la db (otra vez, innecesario, porque mis esquemas tienen todos los campos en required:true y uses o no un dto, te daría error intentar meter alguno vacío, pero bueno.)
+- También modifica un detalle pavo que venía arrastrando desde que esto tiene un homepage y es que el formulario de creación de un producto no limpiaba sus campos luego de hacer submit
+- Mete una vista de success una vez que realizas una compra para que sepas que todo anduvo bien
+- (Ya mencioné que estoy cansado de este curso?)
+
+## 21/01/2023
+
+#### Arquitectura de capas
+
+```
+> npm run capas
+```
+
+- Separa la estructura de la aplicación entre:
+  - Runtime(./app)
+  - Funciones lógicas para las rutas (./controllers)
+  - Esquemas de objetos de la db (./db/schemas)
+  - Objetos de uso de dichos esquemas (./db/models) -- modelos propios de mongoose y helpers ya instanciados
+  - Funciones de uso común entre las rutas (./helpers)
+  - Endpoints de nuestro front-end que hacen uso de las funciones exportadas por los controladores (./routes)
+  - Vistas en hbs y html (./views)
+
 ## 15/01/2023
 
 #### Tercera entrega del proyecto final

@@ -138,6 +138,8 @@
     "process": "node 28-Process/main.js",
     "loadbalance": "node 30-LoadBalance/main.js",
     "logsnperf": "node 32-LogsnPerf/main.js",
-    "terceraentrega": "nodemon 36-TerceraEntrega/main.js"
+    "terceraentrega": "nodemon 36-TerceraEntrega/main.js",
+    "capas": "nodemon 38-Capas/main.js",
+    "persistencia": "nodemon 40-Persistencia/main.js"
   }
 }
